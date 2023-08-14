@@ -1,15 +1,16 @@
 use iced::widget::{button, column, row, text};
 use iced::{Alignment, Color, Element, Padding, Sandbox, Settings};
-use password_generator::{format_password, get_words};
+use password_generator::get_words;
 
 pub fn main() -> iced::Result {
     Password::run(Settings::default())
 }
 
+const PREFIX: &str = "1A!";
+
 struct Password {
     prefix: String,
-    first: String,
-    second: String,
+    words: Vec<String>,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -22,10 +23,15 @@ impl Sandbox for Password {
 
     fn new() -> Self {
         let first_password = get_words();
+        let mut words = Vec::new();
+
+        for word in &first_password {
+            words.push(word.clone());
+        }
+
         Self {
-            prefix: String::from("1A!"),
-            first: String::from(&first_password[0]),
-            second: String::from(&first_password[1]),
+            prefix: String::from(PREFIX),
+            words,
         }
     }
 
@@ -37,8 +43,11 @@ impl Sandbox for Password {
         match message {
             Message::Generate => {
                 let new_password = get_words();
-                self.first = new_password[0].clone();
-                self.second = new_password[1].clone();
+                self.words = Vec::new();
+
+                for word in new_password {
+                    self.words.push(word);
+                }
             }
         }
     }
@@ -48,11 +57,25 @@ impl Sandbox for Password {
         let cyan = Color::from_rgb(0.0, 1.0, 1.0);
         let red = Color::from_rgb(1.0, 0.0, 0.0);
 
+        // let mut row = Row::new();
+
+        // row.push(text(&self.prefix));
+
+        // for word in &self.words {
+        //   row.push(text(word));
+        // }
+
+        // column![
+        //   row,
+        //   button("Generate").on_press(Message::Generate)
+        // ]
+
         column![
             row![
-                text("1A!").size(text_size),
-                text(&self.first).size(text_size).style(cyan),
-                text(&self.second).size(text_size).style(red),
+                text(&self.prefix).size(text_size),
+                text(&self.words[0]).size(text_size).style(cyan),
+                text(&self.words[1]).size(text_size).style(red),
+                // text(&self.words[2]).size(text_size).style(cyan),
             ],
             button("Generate").on_press(Message::Generate)
         ]
