@@ -1,6 +1,6 @@
 use names::{Generator, Name};
 
-fn get_words() -> [String; 2] {
+pub fn get_words() -> [String; 2] {
     let generator = Generator::with_naming(Name::Plain).next().unwrap();
 
     let mut collected = generator.split("-");
