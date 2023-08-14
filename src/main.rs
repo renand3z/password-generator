@@ -1,5 +1,7 @@
 use iced::widget::{button, column, text};
-use iced::{Alignment, Element, Padding, Sandbox, Settings};
+use iced::{Alignment, Element, Padding, Sandbox, Settings, Color};
+use password_generator::format_password;
+
 
 pub fn main() -> iced::Result {
     Password::run(Settings::default())
@@ -28,14 +30,17 @@ impl Sandbox for Password {
     fn update(&mut self, message: Message) {
         match message {
             Message::Generate => {
-                self.value = "Clicked".to_string();
+                self.value = format_password();
             }
         }
     }
 
     fn view(&self) -> Element<Message> {
+        // let style = Style::new() 
+        // .color(Color::from_rgb(1.0, 0.0, 0.0)); 
+
         column![
-            text(&self.value).size(40),
+            text(&self.value).size(40).style(Color::from([0.5, 0.5, 0.5])),
             button("Generate").on_press(Message::Generate)
         ]
         // .spacing(20)
