@@ -1,6 +1,5 @@
 use iced::widget::{button, column, row, text};
 use iced::{Alignment, Color, Element, Padding, Sandbox, Settings};
-use password_generator::get_words;
 
 pub fn main() -> iced::Result {
     Password::run(Settings::default())
@@ -22,7 +21,19 @@ impl Sandbox for Password {
     type Message = Message;
 
     fn new() -> Self {
-        let first_password = get_words();
+        let first_password = {
+            let mut words: Vec<String> = Vec::new();
+            // let i = 0;
+
+            for _ in 0..n {
+                let generator = Generator::with_naming(Name::Plain).next().unwrap();
+                let mut collected = generator.split("-");
+                words.push(collected.next().unwrap().to_string());
+                words.push(collected.next().unwrap().to_string());
+            }
+
+            return words;
+        };
         let mut words = Vec::new();
 
         for word in &first_password {
@@ -42,7 +53,19 @@ impl Sandbox for Password {
     fn update(&mut self, message: Message) {
         match message {
             Message::Generate => {
-                let new_password = get_words();
+                let new_password = {
+                    let mut words: Vec<String> = Vec::new();
+                    // let i = 0;
+
+                    for _ in 0..n {
+                        let generator = Generator::with_naming(Name::Plain).next().unwrap();
+                        let mut collected = generator.split("-");
+                        words.push(collected.next().unwrap().to_string());
+                        words.push(collected.next().unwrap().to_string());
+                    }
+
+                    return words;
+                };
                 self.words = Vec::new();
 
                 for word in new_password {
