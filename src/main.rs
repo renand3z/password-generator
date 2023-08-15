@@ -1,12 +1,13 @@
 use iced::widget::{button, column, row, text};
 use iced::{Alignment, Color, Element, Padding, Sandbox, Settings};
+use password_generator::get_word_pair;
 
 pub fn main() -> iced::Result {
     Password::run(Settings::default())
 }
 
 const PREFIX: &str = "1A!";
-
+const WORDS: u8 = 2;
 struct Password {
     prefix: String,
     words: Vec<String>,
@@ -21,24 +22,7 @@ impl Sandbox for Password {
     type Message = Message;
 
     fn new() -> Self {
-        let first_password = {
-            let mut words: Vec<String> = Vec::new();
-            // let i = 0;
-
-            for _ in 0..n {
-                let generator = Generator::with_naming(Name::Plain).next().unwrap();
-                let mut collected = generator.split("-");
-                words.push(collected.next().unwrap().to_string());
-                words.push(collected.next().unwrap().to_string());
-            }
-
-            return words;
-        };
-        let mut words = Vec::new();
-
-        for word in &first_password {
-            words.push(word.clone());
-        }
+        let words = get_word_pair(WORDS);
 
         Self {
             prefix: String::from(PREFIX),
@@ -53,27 +37,17 @@ impl Sandbox for Password {
     fn update(&mut self, message: Message) {
         match message {
             Message::Generate => {
-                let new_password = {
-                    let mut words: Vec<String> = Vec::new();
-                    // let i = 0;
-
-                    for _ in 0..n {
-                        let generator = Generator::with_naming(Name::Plain).next().unwrap();
-                        let mut collected = generator.split("-");
-                        words.push(collected.next().unwrap().to_string());
-                        words.push(collected.next().unwrap().to_string());
-                    }
-
-                    return words;
-                };
-                self.words = Vec::new();
-
-                for word in new_password {
-                    self.words.push(word);
+                let new_words = get_word_pair(WORDS);
+                    self.words = new_words;
                 }
+                //self.words = Vec::new();
+
+              //  for word in new_words {
+               //     self.words.push(word);
+             //   }
             }
         }
-    }
+    
 
     fn view(&self) -> Element<Message> {
         let text_size = 33;

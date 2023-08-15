@@ -4,9 +4,8 @@ use names::{Generator, Name};
 const PREFIX: &str = "1A!";
 
 // get a pair of words
-pub fn get_words(n: u8) -> Vec<String> {
+pub fn get_word_pair(n: u8) -> Vec<String> {
     let mut words: Vec<String> = Vec::new();
-    // let i = 0;
 
     for _ in 0..n {
         let generator = Generator::with_naming(Name::Plain).next().unwrap();
@@ -25,7 +24,7 @@ fn print_words() {
 
 // create a password string
 pub fn format_password(n: u8) -> String {
-    let words: Vec<String> = Vec::from_iter(get_words(n));
+    let words: Vec<String> = Vec::from_iter(get_word_pair(n));
     let mut sentence: String = words.join("");
     sentence = PREFIX.to_owned() + &sentence;
     return sentence;
@@ -33,11 +32,10 @@ pub fn format_password(n: u8) -> String {
 
 // create a password and print on the terminal with colors
 pub fn print_colored(n: u8) {
-    let words: Vec<String> = Vec::from_iter(get_words(n));
+    let words: Vec<String> = Vec::from_iter(get_word_pair(n));
 
     print!("{}", PREFIX);
 
-    let i = 0;
     for i in 0..words.len() {
         if i % 2 == 0 {
             print!("{}", words[i].cyan());
