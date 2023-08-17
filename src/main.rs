@@ -1,5 +1,5 @@
 use iced::widget::{button, column, row, text};
-use iced::{Alignment, Color, Element, Padding, Sandbox, Settings};
+use iced::{clipboard, Alignment, Color, Element, Padding, Sandbox, Settings};
 use password_generator::get_word_pair;
 
 pub fn main() -> iced::Result {
@@ -16,6 +16,7 @@ struct Password {
 #[derive(Debug, Clone, Copy)]
 enum Message {
     Generate,
+    CopyToClipboard,
 }
 
 impl Sandbox for Password {
@@ -23,6 +24,7 @@ impl Sandbox for Password {
 
     fn new() -> Self {
         let words = get_word_pair(WORDS);
+clipboard::write::<Message>("lol it's coppying".to_string());
 
         Self {
             prefix: String::from(PREFIX),
@@ -31,28 +33,29 @@ impl Sandbox for Password {
     }
 
     fn title(&self) -> String {
-        String::from("Password Generator")
+        String::from("1A! Password Generator")
     }
 
     fn update(&mut self, message: Message) {
         match message {
             Message::Generate => {
                 let new_words = get_word_pair(WORDS);
-                    self.words = new_words;
-                }
-                //self.words = Vec::new();
-
-              //  for word in new_words {
-               //     self.words.push(word);
-             //   }
+                self.words = new_words;
+                // let x = clipboard1;
+            }
+            Message::CopyToClipboard => {
+                let clipboard1 = clipboard::write::<Message>("lol it's coppying".to_string());
+                // let clipboard = clipboard::write::<Message>("lol".to_owned());
+                clipboard1.actions();
             }
         }
-    
+    }
 
     fn view(&self) -> Element<Message> {
         let text_size = 33;
         let cyan = Color::from_rgb(0.0, 1.0, 1.0);
         let red = Color::from_rgb(1.0, 0.0, 0.0);
+        let clipboard1 = clipboard::write::<Message>("lol".to_string());
 
         // let mut row = Row::new();
 
@@ -74,7 +77,9 @@ impl Sandbox for Password {
                 text(&self.words[1]).size(text_size).style(red),
                 // text(&self.words[2]).size(text_size).style(cyan),
             ],
-            button("Generate").on_press(Message::Generate)
+            // text (Message::generic(Message::Generate)),
+            button("Generate").on_press(Message::Generate),
+            button("Copy to Clipboard").on_press(Message::CopyToClipboard),
         ]
         // .spacing(20)
         .padding(Padding::from(30))
