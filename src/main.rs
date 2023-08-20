@@ -1,10 +1,8 @@
 use iced::widget::{button, column, row, text};
 use iced::{
-    clipboard, executor, Alignment, Application, Color, Command, Element, Padding, Settings, Theme,
+    clipboard, executor, Alignment, Application, Color, Command, Element, Padding, Settings, Theme, window,
 };
 use password_generator::get_word_pair;
-
-//test github
 
 pub fn main() -> iced::Result {
     Password::run(Settings::default())
@@ -31,7 +29,7 @@ impl Application for Password {
 
     fn new(_flags: ()) -> (Password, Command<Self::Message>) {
         let words = get_word_pair(WORDS);
-        // clipboard::write::<Message>("lol it's coppying".to_string());
+
 
         (
             Self {
@@ -54,8 +52,9 @@ impl Application for Password {
                 return Command::none();
             }
             Message::CopyToClipboard => {
-                let clipboard1 = clipboard::write::<Message>(PREFIX.to_string() + &self.words.join(""));
-                // let clipboard = clipboard::write::<Message>("lol".to_owned());
+                let clipboard1 =
+                    clipboard::write::<Message>(PREFIX.to_string() + &self.words.join(""));
+        
                 return clipboard1;
             }
         }
@@ -65,40 +64,23 @@ impl Application for Password {
         let text_size = 33;
         let cyan = Color::from_rgb(0.0, 1.0, 1.0);
         let red = Color::from_rgb(1.0, 0.0, 0.0);
-        // let clipboard1 = clipboard::write::<Message>("lol".to_string());
 
-        // let mut row = Row::new();
-
-        // row.push(text(&self.prefix));
-
-        // for word in &self.words {
-        //   row.push(text(word));
-        // }
-
-        // column![
-        //   row,
-        //   button("Generate").on_press(Message::Generate)
-        // ]
+ 
         column![
             row![
-            text(&self.prefix).size(text_size),
-            text(&self.words[0]).size(text_size).style(cyan),
-            text(&self.words[1]).size(text_size).style(red),
+                text(&self.prefix).size(text_size),
+                text(&self.words[0]).size(text_size).style(cyan),
+                text(&self.words[1]).size(text_size).style(red),
+                text(&self.words[2]).size(text_size).style(cyan),
+                text(&self.words[3]).size(text_size).style(red),
+            ],
             button("Generate").on_press(Message::Generate),
-                    button("Copy to Clipboard")
-        .on_press(Message::CopyToClipboard)
-        ],
+            button("Copy to Clipboard").on_press(Message::CopyToClipboard),
         ]
-        // button.on_press(Message::Generate)],
-        // text (Message::generic(Message::Generate)),
-        // .button("Copy to Clipboard")
-        // .on_press(Message::CopyToClipboard)
-        // // .spacing(20)
+        .spacing(20)
         .padding(Padding::from(30))
-        .align_items(Alignment::Center)
-        // .align_self(Alignment::Center)
+        .align_items(Alignment::Start)
         .into()
-        
     }
 
     fn theme(&self) -> iced::Theme {
