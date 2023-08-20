@@ -4,6 +4,8 @@ use iced::{
 };
 use password_generator::get_word_pair;
 
+//test github
+
 pub fn main() -> iced::Result {
     Password::run(Settings::default())
 }
