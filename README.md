@@ -2,7 +2,7 @@
 
 A simple desktop application to generate secure random passwords and copy them to the clipboard. Built with Rust and the Iced GUI library. Compiles to Web Assembly.
 
-![Alt text](screenshot.png)
+![screenshot](screenshot.png)
 
 ## Features
 - Generates passwords consisting of a prefix ("1A!") followed by 4 easy to remember words
